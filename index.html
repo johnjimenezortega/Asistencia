@@ -6,9 +6,30 @@
   <title>Asistencia Kiosco</title>
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
-    body { font-family: system-ui, sans-serif; text-align: center; margin: 0; background: #0f172a; color: white; display: flex; flex-direction: column; height: 100vh; justify-content: center; align-items: center; }
-    #reader { width: 340px; border-radius: 16px; overflow: hidden; border: 3px solid #38bdf8; }
-    #mensaje { margin-top: 20px; font-size: 1.4rem; min-height: 50px; font-weight: bold; }
+    body { 
+      font-family: system-ui, -apple-system, sans-serif; 
+      text-align: center; 
+      margin: 0; 
+      background: #0f172a; 
+      color: white; 
+      display: flex; 
+      flex-direction: column; 
+      height: 100vh; 
+      justify-content: center; 
+      align-items: center; 
+    }
+    #reader { 
+      width: 340px; 
+      border-radius: 16px; 
+      overflow: hidden; 
+      border: 3px solid #38bdf8; 
+    }
+    #mensaje { 
+      margin-top: 20px; 
+      font-size: 1.4rem; 
+      min-height: 50px; 
+      font-weight: bold; 
+    }
     .exito { color: #4ade80; }
     .error { color: #f87171; }
   </style>
@@ -19,8 +40,7 @@
   <div id="mensaje">Listo para escanear</div>
 
   <script>
-https://script.google.com/macros/s/AKfycbxRRNg5xtmwhGSZBV53ffplUemKFSL5iN3rQ0lds8eQkNXuoAFbuxQjvLwb6_cpWDfd/exec
-    const WEB_APP_URL = "TU_URL_DE_APPS_SCRIPT_AQUI"; 
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxRRNg5xtmwhGSZBV53ffplUemKFSL5iN3rQ0lds8eQkNXuoAFbuxQjvLwb6_cpWDfd/exec"; 
     let bloqueado = false;
 
     function onScanSuccess(decodedText) {
@@ -34,13 +54,13 @@ https://script.google.com/macros/s/AKfycbxRRNg5xtmwhGSZBV53ffplUemKFSL5iN3rQ0lds
       fetch(WEB_APP_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({ id: decodedText })
       }).then(() => {
         mensajeEl.className = "exito";
         mensajeEl.innerText = `¡Registrado! (${decodedText})`;
         
-        // Cooldown de 2 segundos antes de admitir el siguiente QR
+        // Espera de 2 segundos antes de admitir el siguiente escaneo
         setTimeout(() => {
           mensajeEl.className = "";
           mensajeEl.innerText = "Listo para escanear";
@@ -55,7 +75,7 @@ https://script.google.com/macros/s/AKfycbxRRNg5xtmwhGSZBV53ffplUemKFSL5iN3rQ0lds
 
     const html5QrCode = new Html5Qrcode("reader");
     html5QrCode.start(
-      { facingMode: "user" }, // Cambiar a "environment" para cámara trasera
+      { facingMode: "user" }, // Usa la cámara frontal del iPad
       { fps: 10, qrbox: 250 },
       onScanSuccess
     );
